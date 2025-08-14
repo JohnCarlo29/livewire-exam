@@ -3,14 +3,14 @@
 namespace App\Actions\Projects;
 
 use App\Models\Project;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ListProject
 {
-    public function execute(?string $keyword = null): Collection
+    public function execute(?string $keyword = null): LengthAwarePaginator
     {
         return Project::when($keyword, function ($query) {
             $query->where('name', 'like', '%'.request('search').'%');
-        })->get();
+        })->paginate();
     }
 }

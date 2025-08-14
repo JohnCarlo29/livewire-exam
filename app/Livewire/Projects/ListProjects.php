@@ -3,11 +3,15 @@
 namespace App\Livewire\Projects;
 
 use App\Actions\Projects\DeleteProject;
+use App\Actions\Projects\ListProject;
 use App\Models\Project;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class ListProjects extends Component
 {
+    use WithPagination;
+
     public $search = '';
 
     public $isModalOpen = false;
@@ -17,6 +21,11 @@ class ListProjects extends Component
     public ?Project $selectedProject = null;
 
     protected $listeners = ['projectSaved' => 'projectSaved', 'closeModal' => 'closeModal'];
+
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
 
     public function projectSaved()
     {
@@ -52,10 +61,7 @@ class ListProjects extends Component
     public function render()
     {
         return view('livewire.projects.list', [
-            'projects' => Project::where(function ($query) {
-                $query->where('name', 'like', '%'.$this->search.'%')
-                    ->orWhere('description', 'like', '%'.$this->search.'%');
-            })->get(),
+            'projects' => new ListProject()->execute($this->search),
         ]);
     }
 }
