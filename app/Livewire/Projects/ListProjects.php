@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class ListProjects extends Component
 {
-    public $projects;
     public $search = '';
     public $isModalOpen = false;
     public $editMode = false;
@@ -16,22 +15,7 @@ class ListProjects extends Component
         'description' => '',
     ];
 
-    protected $listeners = ['projectSaved' => 'fetchProjects'];
-
-    public function mount()
-    {
-        $this->fetchProjects();
-    }
-
-    public function updatedSearch()
-    {
-        $this->fetchProjects();
-    }
-
-    public function fetchProjects()
-    {
-        $this->projects = Project::where('name', 'like', '%' . $this->search . '%')->get();
-    }
+    protected $listeners = ['projectSaved' => '$refresh'];
 
     public function createProject()
     {
@@ -57,6 +41,11 @@ class ListProjects extends Component
 
     public function render()
     {
-        return view('livewire.projects.list');
+        return view('livewire.projects.list', [
+            'projects' => Project::where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                    ->orWhere('description', 'like', '%' . $this->search . '%');
+            })->get()
+        ]);
     }
 }

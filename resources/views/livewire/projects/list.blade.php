@@ -13,11 +13,11 @@
 
             <div class="mt-4">
                 <input
-                    wire:model.debounce.300ms="search"
+                    wire:model.live.debounce.300ms="search"
                     type="text"
                     placeholder="Search projects..."
                     class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200"
-                >
+                />
             </div>
 
             <div class="mt-6">
