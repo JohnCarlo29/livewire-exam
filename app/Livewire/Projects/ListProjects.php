@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Projects;
 
+use App\Actions\Projects\DeleteProject;
 use App\Models\Project;
 use Livewire\Component;
 
@@ -44,7 +45,7 @@ class ListProjects extends Component
     public function deleteProject($id)
     {
         $project = Project::findOrFail($id);
-        $project->delete();
+        new DeleteProject()->execute($project);
         session()->flash('message', 'Project deleted successfully.');
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Projects;
 
+use App\Actions\Projects\CreateProject;
+use App\Actions\Projects\UpdateProject;
 use App\Models\Project;
 use Livewire\Component;
 
@@ -51,15 +53,14 @@ class ProjectForm extends Component
         $this->validate();
 
         if ($this->editMode) {
-            $project = Project::find($this->projectId);
-            $project->update([
+            new UpdateProject()->execute($this->project, [
                 'name' => $this->name,
                 'description' => $this->description,
                 'status' => $this->status,
                 'due_date' => $this->dueDate,
             ]);
         } else {
-            Project::create([
+            new CreateProject()->execute([
                 'name' => $this->name,
                 'description' => $this->description,
                 'status' => $this->status,
