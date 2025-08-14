@@ -7,7 +7,6 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
-use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -17,7 +16,7 @@ class ProjectController extends Controller
     public function index()
     {
         $projects = Project::when(request('search'), function ($query) {
-            $query->where('name', 'like', '%' . request('search') . '%');
+            $query->where('name', 'like', '%'.request('search').'%');
         })->get();
 
         return ProjectResource::collection($projects);

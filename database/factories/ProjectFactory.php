@@ -19,7 +19,7 @@ class ProjectFactory extends Factory
         return [
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph(),
-            'status' => $this->faker->randomElement(['draft','active','done']),
+            'status' => $this->faker->randomElement(['draft', 'active', 'done']),
             'due_date' => $this->faker->optional()->date(),
         ];
     }

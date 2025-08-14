@@ -8,11 +8,17 @@ use Livewire\Component;
 class ProjectForm extends Component
 {
     public ?Project $project = null;
+
     public $name = '';
+
     public $description = '';
+
     public $status = 'draft';
+
     public $dueDate = null;
+
     public $projectId;
+
     public $editMode = false;
 
     protected $rules = [

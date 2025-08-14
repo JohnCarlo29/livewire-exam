@@ -8,8 +8,11 @@ use Livewire\Component;
 class ListProjects extends Component
 {
     public $search = '';
+
     public $isModalOpen = false;
+
     public $editMode = false;
+
     public ?Project $selectedProject = null;
 
     protected $listeners = ['projectSaved' => 'projectSaved', 'closeModal' => 'closeModal'];
@@ -43,15 +46,15 @@ class ListProjects extends Component
         $project = Project::findOrFail($id);
         $project->delete();
         session()->flash('message', 'Project deleted successfully.');
-    }   
+    }
 
     public function render()
     {
         return view('livewire.projects.list', [
             'projects' => Project::where(function ($query) {
-                $query->where('name', 'like', '%' . $this->search . '%')
-                    ->orWhere('description', 'like', '%' . $this->search . '%');
-            })->get()
+                $query->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
+            })->get(),
         ]);
     }
 }
