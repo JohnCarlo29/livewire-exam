@@ -18,6 +18,8 @@ class ProjectForm extends Component
     protected $rules = [
         'name' => 'required|string|min:3',
         'description' => 'nullable|string',
+        'status' => 'required|in:draft,active,completed',
+        'dueDate' => 'nullable|date',
     ];
 
     public function mount($project = null)
