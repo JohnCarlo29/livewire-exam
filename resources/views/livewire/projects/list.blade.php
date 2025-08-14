@@ -34,6 +34,13 @@
                                 >
                                     Edit
                                 </button>
+
+                                <button
+                                    wire:click="deleteProject({{ $project->id }})"
+                                    class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
+                                >
+                                    Delete
+                                </button>
                             </div>
                         </div>
                     @endforeach

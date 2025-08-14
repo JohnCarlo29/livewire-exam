@@ -38,6 +38,13 @@ class ListProjects extends Component
         $this->isModalOpen = true;
     }
 
+    public function deleteProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $project->delete();
+        session()->flash('message', 'Project deleted successfully.');
+    }   
+
     public function render()
     {
         return view('livewire.projects.list', [
