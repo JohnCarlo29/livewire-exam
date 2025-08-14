@@ -10,33 +10,32 @@ class ListProjects extends Component
     public $search = '';
     public $isModalOpen = false;
     public $editMode = false;
-    public $project = [
-        'name' => '',
-        'description' => '',
-    ];
+    public ?Project $selectedProject = null;
 
-    protected $listeners = ['projectSaved' => '$refresh'];
+    protected $listeners = ['projectSaved' => 'projectSaved', 'closeModal' => 'closeModal'];
+
+    public function projectSaved()
+    {
+        $this->closeModal();
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+    }
 
     public function createProject()
     {
-        $this->resetProject();
+        $this->selectedProject = null;
         $this->editMode = false;
         $this->isModalOpen = true;
     }
 
     public function editProject($id)
     {
-        $this->project = Project::find($id)->toArray();
+        $this->selectedProject = Project::findOrFail($id);
         $this->editMode = true;
         $this->isModalOpen = true;
-    }
-
-    public function resetProject()
-    {
-        $this->project = [
-            'name' => '',
-            'description' => '',
-        ];
     }
 
     public function render()

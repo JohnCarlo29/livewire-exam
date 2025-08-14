@@ -1,4 +1,4 @@
-<div x-data="{ open: @entangle('isModalOpen') }">
+<div x-data="{ open: @entangle('isModalOpen').defer }">
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
@@ -43,19 +43,35 @@
     </div>
 
     <!-- Modal -->
-    <x-modal>
-        <div class="px-4 pt-5 pb-4 sm:p-6">
-            <div class="sm:flex sm:items-start">
-                <div class="mt-3 text-center sm:mt-0 sm:text-left w-full">
-                    <h3 class="text-lg font-medium text-gray-900">
-                        {{ $editMode ? 'Edit Project' : 'Create Project' }}
-                    </h3>
-
-                    <div class="mt-4">
-                        {{-- form modal here --}}
-                    </div>
-                </div>
-            </div>
+    <div
+        x-data="{ open: @entangle('isModalOpen') }"
+        x-show="open"
+        x-trap.noscroll="open"
+        x-on:keydown.escape.window="open = false; $wire.isModalOpen = false"
+        class="fixed inset-0 z-50 flex items-center justify-center"
+        style="display: none;"
+    >
+        <!-- backdrop -->
+        <div x-show="open"
+            x-transition.opacity
+            x-on:click="open = false; $wire.isModalOpen = false"
+            class="fixed inset-0 bg-black/50">
         </div>
-    </x-modal>
+
+        <!-- modal panel -->
+         <div x-show="open"
+            x-transition
+            @click.outside="open = false; $wire.isModalOpen = false"
+            class="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 p-6 z-10">
+            <header class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-bold" x-text="$wire.editMode ? 'Edit Project' : 'Create Project'"></h2>
+                <button @click="open = false; $wire.isModalOpen = false" aria-label="Close">✕</button>
+            </header>
+
+            <livewire:projects.project-form 
+            :project="$selectedProject" 
+            :key="$selectedProject ? $selectedProject->id : 'create'" />
+        </div>
+    </div>
+    </div>
 </div>
