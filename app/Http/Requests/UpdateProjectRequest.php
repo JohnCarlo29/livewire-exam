@@ -2,16 +2,14 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class UpdateProjectRequest extends FormRequest
+class UpdateProjectRequest extends StoreProjectRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,8 +19,6 @@ class UpdateProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            //
-        ];
+        return parent::rules();
     }
 }
