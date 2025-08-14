@@ -24,8 +24,8 @@ class StoreProjectRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3'],
             'description' => ['nullable', 'string'],
-            'status' => ['required', 'in:draft,active,completed'],
-            'dueDate' => ['nullable', 'date'],
+            'status' => ['required', 'in:draft,active,done'],
+            'due_date' => ['nullable', 'date'],
         ];
     }
 }
