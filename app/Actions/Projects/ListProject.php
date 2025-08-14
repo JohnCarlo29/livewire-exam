@@ -9,8 +9,8 @@ class ListProject
 {
     public function execute(?string $keyword = null): LengthAwarePaginator
     {
-        return Project::when($keyword, function ($query) {
-            $query->where('name', 'like', '%'.request('search').'%');
+        return Project::when($keyword, function ($query) use ($keyword) {
+            $query->where('name', 'like', '%'.$keyword.'%');
         })->paginate();
     }
 }
