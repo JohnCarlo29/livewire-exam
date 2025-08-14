@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Actions\Projects\CreateProject;
+use App\Actions\Projects\DeleteProject;
+use App\Actions\Projects\ListProject;
+use App\Actions\Projects\UpdateProject;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
@@ -15,9 +19,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = Project::when(request('search'), function ($query) {
-            $query->where('name', 'like', '%'.request('search').'%');
-        })->get();
+        $projects = new ListProject()->execute(request('search'));
 
         return ProjectResource::collection($projects);
     }
@@ -27,7 +29,7 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        $project = Project::create($request->validated());
+        $project = new CreateProject()->execute($request->validated());
 
         return new ProjectResource($project);
     }
@@ -37,9 +39,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        $project->update($request->validated());
+        $updatedProject = new UpdateProject()->execute($project, $request->validated());
 
-        return new ProjectResource($project);
+        return new ProjectResource($updatedProject);
     }
 
     /**
@@ -47,7 +49,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        $project->delete();
+        new DeleteProject()->execute($project);
 
         return response()->noContent();
     }
